@@ -5,6 +5,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var cors = require('cors')
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var employeeRouter = require('./routes/employes')
@@ -14,6 +16,12 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+var corsOptions= {
+  origin:'http://localhost:3001',
+  optionsSuccessStatus:200
+}
+
 
 // app.use(logger((tokens,req,res)=>{
 //   return [
@@ -30,9 +38,16 @@ let fileName = `log`
 let logStream = fs.createWriteStream(path.join(__dirname,fileName),{overrite:false})
 app.use(logger('dev',{stream:logStream}))
 
+
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+
+// middle ware for enabling the CORS 
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

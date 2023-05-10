@@ -39,7 +39,7 @@ function isValidAge(age) {
 }
 
 function isValidEmail(email) {
-  const regex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*\.(com)$/;
+ const regex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*\.(com)$/;
   return regex.test(email);
 }
 
