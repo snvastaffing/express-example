@@ -1,6 +1,0 @@
-[0mOPTIONS /api/v1/employees/addEmployee [32m200[0m 1.223 ms - 0[0m
-[0mPOST /api/v1/employees/addEmployee [32m200[0m 11.857 ms - 92[0m
-[0mOPTIONS /api/v1/employees/addEmployee [32m200[0m 0.227 ms - 0[0m
-[0mPOST /api/v1/employees/addEmployee [32m200[0m 1.716 ms - 182[0m
-[0mOPTIONS /api/v1/employees/addEmployee [32m200[0m 0.112 ms - 0[0m
-[0mPOST /api/v1/employees/addEmployee [32m200[0m 1.114 ms - 272[0m

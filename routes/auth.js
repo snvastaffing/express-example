@@ -1,7 +1,8 @@
 const User = require("../model/user")
 var express = require('express');
+const brcypt = require("bcryptjs")
 var router = express.Router();
-
+const jwt = require("jsonwebtoken")
 
 //here we have tio do the following :- 
 // 1. Get the user input 
@@ -13,25 +14,49 @@ var router = express.Router();
 
 
 /* GET home page. */
-router.post('/register', function (req, res, next) {
+router.post('/register', async (req, res, next) => {
     try {
         const { firstName,
-        lastName,
-        email,
-        password,
-        confirmPassword } = req.body;
+            lastName,
+            email,
+            password,
+            confirmPassword } = req.body;
 
-        if(!(email && (password == confirmPassword) && email, firstName,lastName)){
-            res.status(400).send("All Fields are required");
+
+
+        if (!(email && password && confirmPassword && email, firstName, lastName)) {
+            res.status(400).send({ error: "All Fields are required" });
         }
 
-        const existingUser=        User.findOne({email})
-        if(existingUser){
-            return res.status(409).send(`The user with email : ${email} already exists`)
+        if (password !== confirmPassword) {
+            res.status(400).send({ error: `The password ${password} and confirm password ${confirmPassword} does not macth !` });
+        }
+
+        const existingUser = await User.findOne({ email })
+
+        console.log("EXIST   " + existingUser)
+        if (existingUser) {
+            return res.status(400).send({ error: `The user with email : ${email} already exists` });
         }
 
         // encrypt the password 
-        
+
+        const enrcyptedPassword = await brcypt.hash(password, 10);
+        const user = await User.create({
+            firstName,
+            lastName,
+            email: email.toLowerCase(),
+            password: enrcyptedPassword
+        });
+
+        // creating a token with some expiry time 
+
+        const token = jwt.sign({
+            id: user._id, email
+        }, process.env.TOKEN_KEY, { expiresIn: "2h" });
+        user.token = token
+
+        res.status(201).json(user)
 
     } catch (error) {
         console.log(error)
@@ -41,3 +66,4 @@ router.post('/register', function (req, res, next) {
 router.post('/login', function (req, res, next) {
     // implementation goes here 
 });
+module.exports = router;
