@@ -6,7 +6,9 @@ const userSchema = new mongoose.Schema(
         lastName:{type:String,default:null},
         email:{type:String,default:null},
         password:{type:String,default:null},        
-        token:{type:String,default:null}
+        token:{type:String,default:null},
+        roles:{type:[String],enum:['admin','user','sales','accounts','warehouse'], default:'user'},
+
     }
 )
 
