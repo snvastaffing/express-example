@@ -11,7 +11,7 @@ var cors = require('cors')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var employeeRouter = require('./routes/employes')
+
 var authRouter= require('./routes/auth')
 var productsRouter= require('./routes/products')
 var app = express();
@@ -55,7 +55,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 /*=====================  THE ROUTES START============================*/
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api/v1/employees', employeeRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/products', productsRouter);
 

@@ -1,6 +1,6 @@
 var express = require('express');
 const product = require('../model/product');
-
+var authMiddleware = require('../middleware/auth');
 var router = express.Router();
 
 const defaultImage = () => {
@@ -34,6 +34,7 @@ const getDefaultGallery = () => {
         }
     ]
 }
+
 const getdefaultVariations = () => {
     return [
         {
@@ -75,8 +76,7 @@ const getdefaultVariations = () => {
     ]
 }
 /* GET home page. */
-router.post('/addProduct', async function (req, res, next) {
-
+router.post('/addProduct', authMiddleware, async function (req, res, next) {
     try {
         const { name, description, slug, image, gallery, price, sale_price, variations } = req.body
         if (!(name && slug)) {
@@ -103,4 +103,21 @@ router.post('/addProduct', async function (req, res, next) {
     }
 });
 
+
+router.get('/allProducts', authMiddleware, async function (req, res, next) {
+    try {
+        // const { name, description, slug, image, gallery, price, sale_price, variations } = req.body
+        // if (!(name && slug)) {
+        //     return res.status(401).json({ errors: ["The name is required! all the data is being saved as default values "] })
+        // }
+        const existingProduct = await product.find();
+        if (!existingProduct) {
+            return res.status(401).json({ errors: [`Empty ${existingProduct} `] })
+        }
+        res.status(200).send(JSON.stringify(existingProduct))
+    } catch (error) {
+        console.log(error
+        )
+    }
+});
 module.exports = router;
