@@ -1,4 +1,3 @@
-const User = require("../model/user")
 var express = require('express');
 const brcypt = require("bcryptjs")
 var router = express.Router();
